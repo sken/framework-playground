@@ -1,55 +1,48 @@
 <script lang="ts">
+    import ConfigurationPanel from '../components/ConfigurationPanel.svelte'
+    import Grid from "../components/Grid.svelte";
+
     let defaultLineCount = 10;
-    let divLineCount = 25;
+    let defaultRowCount = 10;
+
     let selectedLineCount;
-
-
-    $: lineCssStyles = `height: ${100 / lineCount}vh`;
+    let selectedRowCount;
 
     $: lineCount = selectedLineCount ? selectedLineCount.id : defaultLineCount;
+    $: rowCount = selectedRowCount ? selectedRowCount.id : defaultRowCount;
+
     let lineCountOptions = [
         {id: 10, text: 10},
         {id: 15, text: 15},
         {id: 20, text: 20},
         {id: 50, text: 50},
     ];
-    $: dividerCssStyles = `border-right: 1px solid red;width: ${100 / divLineCount}vw; float:left;`;
+
+    let lineRowOptions = [
+        {id: 10, text: 10},
+        {id: 15, text: 15},
+        {id: 20, text: 20},
+        {id: 50, text: 50},
+    ];
 </script>
-<style>
-    select {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
+<style lang="scss">
 
-    :global(*) {
-        box-sizing: border-box;
-    }
+  :global(*) {
+    box-sizing: border-box;
+  }
 
-    :global(body) {
-        margin: 0;
-        padding: 0;
-    }
-
-    div {
-        border-bottom: 1px solid #666;
-    }
+  :global(body) {
+    margin: 0;
+    padding: 0;
+  }
 </style>
+<ConfigurationPanel
+        bind:selectedLineCount={selectedLineCount}
+        bind:selectedRowCount={selectedRowCount}
+        lineCountOptions={lineCountOptions}
+        lineRowOptions={lineRowOptions}/>
 
-<select bind:value={selectedLineCount}>
-    {#each lineCountOptions as number}
-        <option value={number}>
-            {number.text}
-        </option>
-    {/each}
-</select>
+<Grid
+        rowCount={rowCount}
+        lineCount={lineCount}/>
 
-{#each {length: divLineCount} as _, i}
-<div style="{dividerCssStyles}">
-    {#if selectedLineCount}
-        {#each {length: lineCount} as _, i}
-            <div style="{lineCssStyles}"></div>
-        {/each}
-    {/if}
-</div>
-{/each}
